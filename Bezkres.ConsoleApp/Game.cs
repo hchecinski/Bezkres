@@ -1,5 +1,6 @@
 ﻿using Bezkres.ConsoleApp.Components;
 using Bezkres.ConsoleApp.Entities;
+using Bezkres.ConsoleApp.Managers;
 using Bezkres.ConsoleApp.Systems;
 using Bezkres.ConsoleApp.Systems.Interfaces;
 
@@ -8,7 +9,7 @@ namespace Bezkres.ConsoleApp;
 internal class Game
 {
     bool _isRuning = true;
-    Dictionary<Guid, Entity> _entityRegistry = new Dictionary<Guid,Entity>();
+    EntityManager entityManager = new EntityManager();
 
     InputSystem _inputSystem = new InputSystem();
     MovementSystem _movementSystem = new MovementSystem();
@@ -16,18 +17,22 @@ internal class Game
 
     private void Initialize()
     {
-        var _player = new Player();
-        _player.Initialize(_entityRegistry);
+        entityManager.AddSystem(_inputSystem);
+        entityManager.AddSystem(_movementSystem);
+        entityManager.AddSystem(_renderingSystem);
+
+        var player = new Entity();
+        player.AddComponent(new LocalizationsComponent());
+        player.AddComponent(new PositionComponent());
+        player.AddComponent(new CommandComponent());
+        player.AddComponent(new LoggerComponent());
+        entityManager.RegisterEntity(player);
 
         var pickaxe = new Entity();
-        pickaxe.Initialize(_entityRegistry);
         pickaxe.AddComponent(new NameComponent() { Name = "Kilof"});
         pickaxe.AddComponent(new WeightComponent() { Weight = 3 });
         pickaxe.AddComponent(new WealthComponent() { Wealth = 20 });
-
-        _inputSystem.Initialize(_entityRegistry);
-        _movementSystem.Initialize(_entityRegistry);
-        _renderingSystem.Initialize(_entityRegistry);
+        entityManager.RegisterEntity(pickaxe);
     }
 
     private void Update()

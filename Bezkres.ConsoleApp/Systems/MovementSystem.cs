@@ -2,27 +2,46 @@
 using Bezkres.ConsoleApp.Entities;
 using Bezkres.ConsoleApp.Models;
 using Bezkres.ConsoleApp.Systems.Interfaces;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace Bezkres.ConsoleApp.Systems;
 
-public class MovementSystem : GameSystem, IUpdate
+public class MovementSystem : IRegisterSystem
 {
-    public override void Initialize(HashSet<Entity> entities)
+    readonly List<Entity> _entities = new List<Entity>();
+
+    public void RegisterEntity(Entity entity)
     {
-        var player = entities.OfType<Player>().FirstOrDefault();
-        if(player == null)
+        if(!entity.HasComponent<LoggerComponent>())
         {
-            throw new InvalidOperationException($"Player entity not found during MovementSystem initialization. Ensure that the Player entity is added to entity collections.");
+            return;
         }
 
-        AddEntity(player);
+        if(!entity.HasComponent<CommandComponent>())
+        {
+            return;
+        }
+
+        if(!entity.HasComponent<PositionComponent>())
+        {
+            return;
+        }
+
+        if(!entity.HasComponent<PositionComponent>())
+        {
+            return;
+        }
+
+        _entities.Add(entity);
+    }
+
+    public void UnregisterEntity(Entity entity)
+    {
+        _entities.Remove(entity);
     }
 
     public void Update()
     {
-        foreach(var entity in Entities)
+        foreach(var entity in _entities)
         {
             var commandComponent = entity.GetComponent<CommandComponent>();
             var positionComponent = entity.GetComponent<PositionComponent>();

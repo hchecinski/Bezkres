@@ -1,57 +1,72 @@
 ﻿using Bezkres.ConsoleApp.Components;
 using Bezkres.ConsoleApp.Entities;
 using Bezkres.ConsoleApp.Systems.Interfaces;
-using System.Reflection.Metadata.Ecma335;
 
 namespace Bezkres.ConsoleApp.Systems;
 
-public class RenderingSystem : GameSystem, IDraw
+public class RenderingSystem : IRegisterSystem
 {
-    public override void Initialize(HashSet<Entity> entities)
+    readonly List<Entity> _entities = new List<Entity>();
+    public void RegisterEntity(Entity entity)
     {
-        var player = entities.OfType<Player>().FirstOrDefault();
-        if(player == null)
+
+        if(!entity.HasComponent<LoggerComponent>())
         {
-            throw new InvalidOperationException($"Player entity not found during MovementSystem initialization. Ensure that the Player entity is added to entity collections.");
+            return;
         }
 
-        AddEntity(player);
+        if(!entity.HasComponent<LocalizationsComponent>())
+        {
+            return;
+        }
+
+        if(!entity.HasComponent<PositionComponent>())
+        {
+            return;
+        }
+
+        _entities.Add(entity);
+    }
+
+    public void UnregisterEntity(Entity entity)
+    {
+        _entities.Remove(entity);
     }
 
     public void Draw()
     {
-        var player = GetEntity<Player>();
-        ArgumentNullException.ThrowIfNull(player);
-
-        var localizationsComponent = player.GetComponent<LocalizationsComponent>();
-        ArgumentNullException.ThrowIfNull(localizationsComponent);
-
-        var positionComponent = player.GetComponent<PositionComponent>();
-        ArgumentNullException.ThrowIfNull(positionComponent);
-
-        var localization = localizationsComponent.Localizations.FirstOrDefault(l => l.X == positionComponent.X && l.Y == positionComponent.Y);
-        ArgumentNullException.ThrowIfNull(localization);
-
-        var logComponent = player.GetComponent<LoggerComponent>();
-        ArgumentNullException.ThrowIfNull(logComponent);
-
-        if(logComponent.Logger.Any())
+        foreach(var entity in _entities)
         {
-            foreach(var log in logComponent.Logger)
+            var localizationsComponent = entity.GetComponent<LocalizationsComponent>();
+            ArgumentNullException.ThrowIfNull(localizationsComponent);
+
+            var positionComponent = entity.GetComponent<PositionComponent>();
+            ArgumentNullException.ThrowIfNull(positionComponent);
+
+            var localization = localizationsComponent.Localizations.FirstOrDefault(l => l.X == positionComponent.X && l.Y == positionComponent.Y);
+            ArgumentNullException.ThrowIfNull(localization);
+
+            var logComponent = entity.GetComponent<LoggerComponent>();
+            ArgumentNullException.ThrowIfNull(logComponent);
+
+            if(logComponent.Logger.Any())
             {
-                Console.ForegroundColor = log.Color;
-                Console.WriteLine(log.Text);
+                foreach(var log in logComponent.Logger)
+                {
+                    Console.ForegroundColor = log.Color;
+                    Console.WriteLine(log.Text);
+                }
+
+                logComponent.Logger.Clear();
             }
 
-            logComponent.Logger.Clear();
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine(localization.Name);
+
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine(localization.Description);
         }
-
-        Console.WriteLine();
-
-        Console.ForegroundColor= ConsoleColor.Magenta;
-        Console.WriteLine(localization.Name);
-
-        Console.ForegroundColor = ConsoleColor.Gray;
-        Console.WriteLine(localization.Description);
     }
 }

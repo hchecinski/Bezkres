@@ -8,11 +8,6 @@ public class Entity
 
     public Guid Id { get; } = Guid.NewGuid();
 
-    public virtual void Initialize(Dictionary<Guid, Entity> entityRegistry)
-    {
-        entityRegistry.Add(Id, this);
-    }
-
     public T? GetComponent<T>() where T : IComponent
     {
         return _components.OfType<T>().FirstOrDefault();

@@ -32,10 +32,9 @@ public class InputSystemTests
     public void Update_ShouldSetCommandType_WhenValidCommandIsEntered(string input, CommandTypes suspectCommand)
     {
         // Arrange
+        var entityRegister = new Dictionary<Guid, Entity>();
         var inputSystem = new InputSystem();
         var player = new Player();
-        player.Initialize();
-        inputSystem.AddEntity(player);
 
         using(var consoleInput = new StringReader(input))
         {
@@ -59,8 +58,6 @@ public class InputSystemTests
         var player = new Player();
         player.AddComponent(new CommandComponent());
 
-        // Symulacja obecności encji Player w systemie
-        inputSystem.AddEntity(player);
 
         // Symulacja wejścia użytkownika
         var input = "unknown";
@@ -105,8 +102,6 @@ public class InputSystemTests
         var inputSystem = new InputSystem();
         var player = new Player();
 
-        // Symulacja obecności encji Player w systemie (bez CommandComponent)
-        inputSystem.AddEntity(player);
 
         // Symulacja wejścia użytkownika
         var input = "w";
@@ -130,8 +125,6 @@ public class InputSystemTests
         var player = new Player();
         player.AddComponent(new CommandComponent());
 
-        // Symulacja obecności encji Player w systemie
-        inputSystem.AddEntity(player);
 
         // Symulacja pustego wejścia użytkownika
         var input = "";

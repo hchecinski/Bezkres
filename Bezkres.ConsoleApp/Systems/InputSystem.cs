@@ -2,12 +2,12 @@
 using Bezkres.ConsoleApp.Entities;
 using Bezkres.ConsoleApp.Models;
 using Bezkres.ConsoleApp.Systems.Interfaces;
-using System.Diagnostics;
 
 namespace Bezkres.ConsoleApp.Systems;
 
-public class InputSystem : GameSystem, IUpdate
+public class InputSystem : IRegisterSystem
 {
+    readonly List<Entity> _items = new List<Entity>();
     readonly Dictionary<string, CommandTypes> _commands = new(StringComparer.OrdinalIgnoreCase)
     {
         { "w", CommandTypes.MoveToWest },
@@ -39,46 +39,55 @@ public class InputSystem : GameSystem, IUpdate
         { "help", CommandTypes.Help }
     };
 
-    public override void Initialize(HashSet<Entity> entities)
+    public void RegisterEntity(Entity entity)
     {
-        var player = entities.OfType<Player>().FirstOrDefault();
-        if(player == null)
+        if(!entity.HasComponent<LoggerComponent>())
         {
-            throw new InvalidOperationException($"Player entity not found during InputSystem initialization. Ensure that the Player entity is added to entity collections.");
+            return;
         }
-        
-        AddEntity(player);
+
+        if(!entity.HasComponent<CommandComponent>())
+        {
+            return;
+        }
+
+        _items.Add(entity);
+    }
+
+    public void UnregisterEntity(Entity entity)
+    {
+        _items.Remove(entity);
     }
 
     public void Update()
     {
         try
         {
-            Console.ForegroundColor = ConsoleColor.White;
-            var commandEntered = Console.ReadLine()?.Trim().ToLower();
-            if(string.IsNullOrWhiteSpace(commandEntered))
+            foreach(var item in _items)
             {
-                return;
-            }
+                var commandComponent = item.GetComponent<CommandComponent>();
+                ArgumentNullException.ThrowIfNull(commandComponent);
 
-            Player? player = GetEntity<Player>();
-            ArgumentNullException.ThrowIfNull(player);
+                var loggerComponent = item.GetComponent<LoggerComponent>();
+                ArgumentNullException.ThrowIfNull(loggerComponent);
 
-            var commandComponent = player.GetComponent<CommandComponent>();
-            ArgumentNullException.ThrowIfNull(commandComponent);
+                Console.ForegroundColor = ConsoleColor.White;
+                var commandEntered = Console.ReadLine()?.Trim().ToLower();
+                if(string.IsNullOrWhiteSpace(commandEntered))
+                {
+                    return;
+                }
 
-            var loggerComponent = player.GetComponent<LoggerComponent>();
-            ArgumentNullException.ThrowIfNull(loggerComponent);
-
-            var commandType = CommandTypes.None;
-            if(_commands.TryGetValue(commandEntered, out commandType))
-            {
-                commandComponent.CommandTypes = commandType;
-            }
-            else
-            {
-                commandComponent.CommandTypes = CommandTypes.None;
-                loggerComponent.Logger.Add(new Log($"- tego nie uda ci się zrobić.", ConsoleColor.DarkRed));
+                var commandType = CommandTypes.None;
+                if(_commands.TryGetValue(commandEntered, out commandType))
+                {
+                    commandComponent.CommandTypes = commandType;
+                }
+                else
+                {
+                    commandComponent.CommandTypes = CommandTypes.None;
+                    loggerComponent.Logger.Add(new Log($"- tego nie uda ci się zrobić.", ConsoleColor.DarkRed));
+                }
             }
         }
         catch(Exception ex)
