@@ -36,7 +36,19 @@ public class InputSystem : IRegisterSystem
         { "pd", CommandTypes.MoveToSouth },
 
         { "pomoc", CommandTypes.Help},
-        { "help", CommandTypes.Help }
+        { "help", CommandTypes.Help },
+
+        { "wez", CommandTypes.TakeItem },
+        { "weź", CommandTypes.TakeItem },
+        { "take", CommandTypes.TakeItem },
+        { "wyrzuc", CommandTypes.DropItem },
+        { "wyr", CommandTypes.DropItem },
+        { "wyrzuć", CommandTypes.DropItem },
+        { "drop", CommandTypes.DropItem },
+        { "inwentarz", CommandTypes.ShowInventoryList },
+        { "inw", CommandTypes.ShowInventoryList },
+        { "inventory", CommandTypes.ShowInventoryList },
+        { "inv", CommandTypes.ShowInventoryList }
     };
 
     public void RegisterEntity(Entity entity)
@@ -100,9 +112,15 @@ public class InputSystem : IRegisterSystem
 public enum CommandTypes
 {
     None = 0,
+
     MoveToNorth = 1,
     MoveToSouth = 2,
     MoveToEast = 3,
     MoveToWest = 4,
+
     Help = 5,
+
+    ShowInventoryList = 10,
+    TakeItem = 11,
+    DropItem = 12
 }

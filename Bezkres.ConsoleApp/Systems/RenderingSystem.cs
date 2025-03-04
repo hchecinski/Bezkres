@@ -6,67 +6,66 @@ namespace Bezkres.ConsoleApp.Systems;
 
 public class RenderingSystem : IRegisterSystem
 {
-    readonly List<Entity> _entities = new List<Entity>();
+    readonly List<Entity> _localizations = new List<Entity>();
+    Entity? _player = null;
+
     public void RegisterEntity(Entity entity)
     {
-
-        if(!entity.HasComponent<LoggerComponent>())
+        if(entity.EntityType == EntityTypes.Player)
         {
-            return;
+            _player = entity;
         }
 
-        if(!entity.HasComponent<LocalizationsComponent>())
+        if(entity.EntityType == EntityTypes.Location)
         {
-            return;
+            _localizations.Add(entity);
         }
 
-        if(!entity.HasComponent<PositionComponent>())
-        {
-            return;
-        }
-
-        _entities.Add(entity);
     }
 
     public void UnregisterEntity(Entity entity)
     {
-        _entities.Remove(entity);
+        if(entity.EntityType == EntityTypes.Player)
+        {
+            _player = null;
+        }
+
+        if(entity.EntityType == EntityTypes.Location)
+        {
+            _localizations.Remove(entity);
+        }
     }
 
     public void Draw()
     {
-        foreach(var entity in _entities)
+        ArgumentNullException.ThrowIfNull(_player);
+
+        var positionComponent = _player.GetComponent<PositionComponent>();
+        ArgumentNullException.ThrowIfNull(positionComponent);
+
+        var location = _localizations.FirstOrDefault(l => l.GetComponent<PositionComponent>()?.X == positionComponent.X && l.GetComponent<PositionComponent>()?.Y == positionComponent.Y);
+        ArgumentNullException.ThrowIfNull(location);
+
+        var logComponent = _player.GetComponent<LoggerComponent>();
+        ArgumentNullException.ThrowIfNull(logComponent);
+
+        if(logComponent.Logger.Any())
         {
-            var localizationsComponent = entity.GetComponent<LocalizationsComponent>();
-            ArgumentNullException.ThrowIfNull(localizationsComponent);
-
-            var positionComponent = entity.GetComponent<PositionComponent>();
-            ArgumentNullException.ThrowIfNull(positionComponent);
-
-            var localization = localizationsComponent.Localizations.FirstOrDefault(l => l.X == positionComponent.X && l.Y == positionComponent.Y);
-            ArgumentNullException.ThrowIfNull(localization);
-
-            var logComponent = entity.GetComponent<LoggerComponent>();
-            ArgumentNullException.ThrowIfNull(logComponent);
-
-            if(logComponent.Logger.Any())
+            foreach(var log in logComponent.Logger)
             {
-                foreach(var log in logComponent.Logger)
-                {
-                    Console.ForegroundColor = log.Color;
-                    Console.WriteLine(log.Text);
-                }
-
-                logComponent.Logger.Clear();
+                Console.ForegroundColor = log.Color;
+                Console.WriteLine(log.Text);
             }
 
-            Console.WriteLine();
-
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine(localization.Name);
-
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine(localization.Description);
+            logComponent.Logger.Clear();
         }
+
+        Console.WriteLine();
+
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine(location.GetComponent<NameComponent>()?.Name);
+
+        Console.ForegroundColor = ConsoleColor.Gray;
+        Console.WriteLine(location.GetComponent<DescriptionComponent>()?.Description);
     }
 }

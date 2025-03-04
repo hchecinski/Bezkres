@@ -6,6 +6,13 @@ public class Entity
 {
     readonly HashSet<IComponent> _components = new (new ComponentTypeComparer());
 
+    public Entity(EntityTypes type)
+    {
+        EntityType = type;
+    }
+
+    public EntityTypes EntityType { get; set; }
+
     public Guid Id { get; } = Guid.NewGuid();
 
     public T? GetComponent<T>() where T : IComponent
