@@ -4,7 +4,7 @@ namespace Bezkres.ConsoleApp.Entities;
 
 public class Entity
 {
-    readonly HashSet<IComponent> _components = new HashSet<IComponent>(new ComponentTypeComparer());
+    readonly HashSet<IComponent> _components = new (new ComponentTypeComparer());
 
     public Guid Id { get; } = Guid.NewGuid();
 

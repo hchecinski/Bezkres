@@ -1,5 +1,6 @@
 ﻿using Bezkres.ConsoleApp.Components;
 using Bezkres.ConsoleApp.Entities;
+using Bezkres.ConsoleApp.Managers;
 using Bezkres.ConsoleApp.Systems;
 
 namespace Bezkres.Tests.Systems;
@@ -32,9 +33,13 @@ public class InputSystemTests
     public void Update_ShouldSetCommandType_WhenValidCommandIsEntered(string input, CommandTypes suspectCommand)
     {
         // Arrange
-        var entityRegister = new Dictionary<Guid, Entity>();
+        var entityManager = new EntityManager();
         var inputSystem = new InputSystem();
-        var player = new Player();
+        entityManager.AddSystem(inputSystem);
+        var player = new Entity();
+        player.AddComponent(new LoggerComponent());
+        player.AddComponent(new CommandComponent());
+        entityManager.RegisterEntity(player);
 
         using(var consoleInput = new StringReader(input))
         {
@@ -55,7 +60,7 @@ public class InputSystemTests
     {
         // Arrange
         var inputSystem = new InputSystem();
-        var player = new Player();
+        var player = new Entity();
         player.AddComponent(new CommandComponent());
 
 
@@ -100,7 +105,7 @@ public class InputSystemTests
     {
         // Arrange
         var inputSystem = new InputSystem();
-        var player = new Player();
+        var player = new Entity();
 
 
         // Symulacja wejścia użytkownika
@@ -122,7 +127,7 @@ public class InputSystemTests
     {
         // Arrange
         var inputSystem = new InputSystem();
-        var player = new Player();
+        var player = new Entity();
         player.AddComponent(new CommandComponent());
 
 
