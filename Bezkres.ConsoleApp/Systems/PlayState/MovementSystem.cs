@@ -3,7 +3,7 @@ using Bezkres.ConsoleApp.Entities;
 using Bezkres.ConsoleApp.Models;
 using Bezkres.ConsoleApp.Systems.Interfaces;
 
-namespace Bezkres.ConsoleApp.Systems;
+namespace Bezkres.ConsoleApp.Systems.PlayState;
 
 public class MovementSystem : IRegisterSystem
 {
@@ -12,12 +12,12 @@ public class MovementSystem : IRegisterSystem
 
     public void RegisterEntity(Entity entity)
     {
-        if(entity.EntityType == EntityTypes.Location)
+        if (entity.EntityType == EntityTypes.Location)
         {
             _localization.Add(entity);
         }
 
-        if(entity.EntityType == EntityTypes.Player)
+        if (entity.EntityType == EntityTypes.Player)
         {
             _player = entity;
         }
@@ -25,12 +25,12 @@ public class MovementSystem : IRegisterSystem
 
     public void UnregisterEntity(Entity entity)
     {
-        if(entity.EntityType == EntityTypes.Location)
+        if (entity.EntityType == EntityTypes.Location)
         {
             _localization.Remove(entity);
         }
 
-        if(entity.EntityType == EntityTypes.Player)
+        if (entity.EntityType == EntityTypes.Player)
         {
             _player = null;
         }
@@ -44,7 +44,7 @@ public class MovementSystem : IRegisterSystem
         var positionComponent = _player.GetComponent<PositionComponent>();
         var logger = _player.GetComponent<LoggerComponent>();
 
-        if(commandComponent == null || positionComponent == null || logger == null)
+        if (commandComponent == null || positionComponent == null || logger == null)
         {
             return;
         }
@@ -53,39 +53,39 @@ public class MovementSystem : IRegisterSystem
         int y = positionComponent.Y;
         string direction = string.Empty;
         bool isMoved = true;
-        switch(commandComponent.CommandTypes)
+        switch (commandComponent.CommandTypes)
         {
             case CommandTypes.MoveToWest:
-            x--;
-            direction = "zachód";
-            break;
+                x--;
+                direction = "zachód";
+                break;
             case CommandTypes.MoveToEast:
-            x++;
-            direction = "wschód";
-            break;
+                x++;
+                direction = "wschód";
+                break;
             case CommandTypes.MoveToNorth:
-            y--;
-            direction = "północ";
-            break;
+                y--;
+                direction = "północ";
+                break;
             case CommandTypes.MoveToSouth:
-            y++;
-            direction = "południe";
-            break;
+                y++;
+                direction = "południe";
+                break;
             default:
-            isMoved = false;
-            break;
+                isMoved = false;
+                break;
         }
 
-        
 
-        if(_localization.Any(l => l.GetComponent<PositionComponent>()?.Y == y && l.GetComponent<PositionComponent>()?.X == x) && !string.IsNullOrWhiteSpace(direction))
+
+        if (_localization.Any(l => l.GetComponent<PositionComponent>()?.Y == y && l.GetComponent<PositionComponent>()?.X == x) && !string.IsNullOrWhiteSpace(direction))
         {
             positionComponent.X = x;
             positionComponent.Y = y;
 
             logger.Logger.Add(new Log($"- odchodzisz na {direction}.", ConsoleColor.DarkGray));
         }
-        else if(isMoved)
+        else if (isMoved)
         {
             logger.Logger.Add(new Log($"- tam nie pójdziesz.", ConsoleColor.DarkGray));
         }

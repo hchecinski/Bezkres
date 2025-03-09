@@ -1,4 +1,4 @@
-﻿using Bezkres.ConsoleApp.Systems;
+﻿using Bezkres.ConsoleApp.Systems.PlayState;
 
 namespace Bezkres.ConsoleApp.Components;
 

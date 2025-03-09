@@ -1,7 +1,7 @@
 ﻿using Bezkres.ConsoleApp.Components;
 using Bezkres.ConsoleApp.Entities;
 using Bezkres.ConsoleApp.Managers;
-using Bezkres.ConsoleApp.Systems;
+using Bezkres.ConsoleApp.Systems.PlayState;
 
 namespace Bezkres.Tests.Systems;
 

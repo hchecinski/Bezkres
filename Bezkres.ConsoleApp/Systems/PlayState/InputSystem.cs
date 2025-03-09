@@ -3,7 +3,7 @@ using Bezkres.ConsoleApp.Entities;
 using Bezkres.ConsoleApp.Models;
 using Bezkres.ConsoleApp.Systems.Interfaces;
 
-namespace Bezkres.ConsoleApp.Systems;
+namespace Bezkres.ConsoleApp.Systems.PlayState;
 
 public class InputSystem : IRegisterSystem
 {
@@ -53,12 +53,12 @@ public class InputSystem : IRegisterSystem
 
     public void RegisterEntity(Entity entity)
     {
-        if(!entity.HasComponent<LoggerComponent>())
+        if (!entity.HasComponent<LoggerComponent>())
         {
             return;
         }
 
-        if(!entity.HasComponent<CommandComponent>())
+        if (!entity.HasComponent<CommandComponent>())
         {
             return;
         }
@@ -75,7 +75,7 @@ public class InputSystem : IRegisterSystem
     {
         try
         {
-            foreach(var item in _items)
+            foreach (var item in _items)
             {
                 var commandComponent = item.GetComponent<CommandComponent>();
                 ArgumentNullException.ThrowIfNull(commandComponent);
@@ -85,13 +85,13 @@ public class InputSystem : IRegisterSystem
 
                 Console.ForegroundColor = ConsoleColor.White;
                 var commandEntered = Console.ReadLine()?.Trim().ToLower();
-                if(string.IsNullOrWhiteSpace(commandEntered))
+                if (string.IsNullOrWhiteSpace(commandEntered))
                 {
                     return;
                 }
 
                 var commandType = CommandTypes.None;
-                if(_commands.TryGetValue(commandEntered, out commandType))
+                if (_commands.TryGetValue(commandEntered, out commandType))
                 {
                     commandComponent.CommandTypes = commandType;
                 }
@@ -102,7 +102,7 @@ public class InputSystem : IRegisterSystem
                 }
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.Error.WriteLine($"Błąd podczas przetwarzania wejścia: {ex.Message}");
         }

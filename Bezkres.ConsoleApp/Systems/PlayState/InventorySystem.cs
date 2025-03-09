@@ -2,7 +2,7 @@
 using Bezkres.ConsoleApp.Entities;
 using Bezkres.ConsoleApp.Systems.Interfaces;
 
-namespace Bezkres.ConsoleApp.Systems;
+namespace Bezkres.ConsoleApp.Systems.PlayState;
 
 public class InventorySystem : IRegisterSystem
 {
@@ -10,12 +10,12 @@ public class InventorySystem : IRegisterSystem
 
     public void RegisterEntity(Entity entity)
     {
-        if(!entity.HasComponent<InventoryComponent>() )
+        if (!entity.HasComponent<InventoryComponent>())
         {
             return;
         }
 
-        if(!entity.HasComponent<LoggerComponent>())
+        if (!entity.HasComponent<LoggerComponent>())
         {
             return;
         }

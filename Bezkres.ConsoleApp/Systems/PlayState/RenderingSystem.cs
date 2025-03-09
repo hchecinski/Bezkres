@@ -2,7 +2,7 @@
 using Bezkres.ConsoleApp.Entities;
 using Bezkres.ConsoleApp.Systems.Interfaces;
 
-namespace Bezkres.ConsoleApp.Systems;
+namespace Bezkres.ConsoleApp.Systems.PlayState;
 
 public class RenderingSystem : IRegisterSystem
 {
@@ -11,12 +11,12 @@ public class RenderingSystem : IRegisterSystem
 
     public void RegisterEntity(Entity entity)
     {
-        if(entity.EntityType == EntityTypes.Player)
+        if (entity.EntityType == EntityTypes.Player)
         {
             _player = entity;
         }
 
-        if(entity.EntityType == EntityTypes.Location)
+        if (entity.EntityType == EntityTypes.Location)
         {
             _localizations.Add(entity);
         }
@@ -25,12 +25,12 @@ public class RenderingSystem : IRegisterSystem
 
     public void UnregisterEntity(Entity entity)
     {
-        if(entity.EntityType == EntityTypes.Player)
+        if (entity.EntityType == EntityTypes.Player)
         {
             _player = null;
         }
 
-        if(entity.EntityType == EntityTypes.Location)
+        if (entity.EntityType == EntityTypes.Location)
         {
             _localizations.Remove(entity);
         }
@@ -49,9 +49,9 @@ public class RenderingSystem : IRegisterSystem
         var logComponent = _player.GetComponent<LoggerComponent>();
         ArgumentNullException.ThrowIfNull(logComponent);
 
-        if(logComponent.Logger.Any())
+        if (logComponent.Logger.Any())
         {
-            foreach(var log in logComponent.Logger)
+            foreach (var log in logComponent.Logger)
             {
                 Console.ForegroundColor = log.Color;
                 Console.WriteLine(log.Text);
