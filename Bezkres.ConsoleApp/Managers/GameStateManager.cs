@@ -5,6 +5,7 @@ namespace Bezkres.ConsoleApp.Managers;
 
 public class GameStateManager
 {
+    public bool IsPlaying {get; private set;} = true;
     IGameState _currentGameState = null;
     readonly Dictionary<States, IGameState> _gameStates = new Dictionary<States, IGameState>();
 
@@ -27,15 +28,15 @@ public class GameStateManager
     {
         IGameState startGameState = new StartGameState(entityManager, this);
         IGameState playState = new PlayState(entityManager, this);
-        IGameState endGameState = new EndGameState(entityManager, this);
+        IGameState mainMenuState = new MainMenuState(entityManager, this);
 
         startGameState.Initialize();
         playState.Initialize();
-        endGameState.Initialize();
+        mainMenuState.Initialize();
 
         _gameStates.Add(States.StartGameState, startGameState);
         _gameStates.Add(States.PlayState, playState);
-        _gameStates.Add(States.EndGameState, endGameState);
+        _gameStates.Add(States.MainMenuState, mainMenuState);
     }
 
     internal void Update()
@@ -46,5 +47,10 @@ public class GameStateManager
     internal void Draw()
     {
         _currentGameState.Draw();
+    }
+
+    internal void CloseGame()
+    {
+        IsPlaying = false;
     }
 }

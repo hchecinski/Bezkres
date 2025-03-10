@@ -23,8 +23,10 @@ public class EntityManager
         }
     }
 
-    public bool TryGetEntity(Guid entityId, out Entity entity)
+    public bool TryGetEntity(Guid entityId, Entity? entity)
     {
+        ArgumentNullException.ThrowIfNull(entity);
+
         return _registerEntity.TryGetValue(entityId, out entity);
     }
 }

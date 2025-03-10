@@ -5,7 +5,7 @@ using Bezkres.ConsoleApp.Systems.Interfaces;
 
 namespace Bezkres.ConsoleApp.Systems.PlayState;
 
-public class InputSystem : IRegisterSystem
+public class InputSystem : IRegisterSystem, IUpdateSystem
 {
     readonly List<Entity> _items = new List<Entity>();
     readonly Dictionary<string, CommandTypes> _commands = new(StringComparer.OrdinalIgnoreCase)
@@ -37,6 +37,8 @@ public class InputSystem : IRegisterSystem
 
         { "pomoc", CommandTypes.Help},
         { "help", CommandTypes.Help },
+
+        { "menu", CommandTypes.ShowMainMenu},
 
         { "wez", CommandTypes.TakeItem },
         { "weź", CommandTypes.TakeItem },
@@ -122,5 +124,7 @@ public enum CommandTypes
 
     ShowInventoryList = 10,
     TakeItem = 11,
-    DropItem = 12
+    DropItem = 12,
+
+    ShowMainMenu = 13,
 }

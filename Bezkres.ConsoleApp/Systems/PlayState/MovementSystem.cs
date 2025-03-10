@@ -84,12 +84,13 @@ public class MovementSystem : IRegisterSystem
             positionComponent.Y = y;
 
             logger.Logger.Add(new Log($"- odchodzisz na {direction}.", ConsoleColor.DarkGray));
+            commandComponent.CommandTypes = CommandTypes.None;
         }
         else if (isMoved)
         {
             logger.Logger.Add(new Log($"- tam nie pójdziesz.", ConsoleColor.DarkGray));
+            commandComponent.CommandTypes = CommandTypes.None;
         }
 
-        commandComponent.CommandTypes = CommandTypes.None;
     }
 }

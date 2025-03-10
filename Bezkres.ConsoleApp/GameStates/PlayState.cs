@@ -14,7 +14,8 @@ public class PlayState : IGameState
     MovementSystem _movementSystem = new MovementSystem();
     RenderingSystem _renderingSystem = new RenderingSystem();
     InventorySystem _inventorySystem = new InventorySystem();
-
+    ChangeStateSystem _changeStateSystem = null;
+    
     public PlayState(EntityManager entityManager, GameStateManager gameStateManager)
     {
         _entityManager = entityManager;
@@ -23,6 +24,9 @@ public class PlayState : IGameState
 
     public void Initialize()
     {
+        _changeStateSystem = new ChangeStateSystem(_gameStateManager);
+
+        _entityManager.AddSystem(_changeStateSystem);
         _entityManager.AddSystem(_inputSystem);
         _entityManager.AddSystem(_movementSystem);
         _entityManager.AddSystem(_renderingSystem);
@@ -76,6 +80,7 @@ public class PlayState : IGameState
         _inputSystem.Update();
         _movementSystem.Update();
         _inventorySystem.Update();
+        _changeStateSystem.Update();
     }
 
     public void Draw()

@@ -5,5 +5,5 @@ public enum States
     None,
     StartGameState,
     PlayState,
-    EndGameState
+    MainMenuState
 }

@@ -27,7 +27,7 @@ internal class Game
     {
         Initialize();
 
-        while(true)
+        while(_gameStateManager.IsPlaying)
         {
             Draw();
             Update();
