@@ -10,6 +10,7 @@ internal class Game
     private void Initialize()
     {
         _gameStateManager.Initialize(_entityManager);
+        _gameStateManager.ChangeState(Entities.States.StartGameState);
     }
 
     private void Update()

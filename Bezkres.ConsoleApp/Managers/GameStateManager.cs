@@ -25,13 +25,17 @@ public class GameStateManager
 
     public void Initialize(EntityManager entityManager)
     {
-        IGameState startGameState = new StartGameState(entityManager);
-        IGameState playState = new PlayState(entityManager);
-        IGameState endGameState = new EndGameState(entityManager);
+        IGameState startGameState = new StartGameState(entityManager, this);
+        IGameState playState = new PlayState(entityManager, this);
+        IGameState endGameState = new EndGameState(entityManager, this);
 
         startGameState.Initialize();
         playState.Initialize();
         endGameState.Initialize();
+
+        _gameStates.Add(States.StartGameState, startGameState);
+        _gameStates.Add(States.PlayState, playState);
+        _gameStates.Add(States.EndGameState, endGameState);
     }
 
     internal void Update()

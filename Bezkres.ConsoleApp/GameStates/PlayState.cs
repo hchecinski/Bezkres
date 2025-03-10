@@ -8,15 +8,17 @@ namespace Bezkres.ConsoleApp.GameStates;
 public class PlayState : IGameState
 {
     EntityManager _entityManager;
+    GameStateManager _gameStateManager;
 
     InputSystem _inputSystem = new InputSystem();
     MovementSystem _movementSystem = new MovementSystem();
     RenderingSystem _renderingSystem = new RenderingSystem();
     InventorySystem _inventorySystem = new InventorySystem();
 
-    public PlayState(EntityManager entityManager)
+    public PlayState(EntityManager entityManager, GameStateManager gameStateManager)
     {
         _entityManager = entityManager;
+        _gameStateManager = gameStateManager;
     }
 
     public void Initialize()
@@ -71,9 +73,13 @@ public class PlayState : IGameState
 
     public void Update()
     {
+        _inputSystem.Update();
+        _movementSystem.Update();
+        _inventorySystem.Update();
     }
 
     public void Draw()
     {
+        _renderingSystem.Draw();
     }
 }
