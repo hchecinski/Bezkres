@@ -9,7 +9,7 @@ public class EntityTests
     public void AddComponent_ShouldAddComponent()
     {
         // Arrange
-        var entity = new Entity();
+        var entity = new Entity(EntityTypes.Player);
         var healthComponent = new HealthComponent() { Health = 100 };
 
         // Act
@@ -25,7 +25,7 @@ public class EntityTests
     public void AddComponent_ShouldThrowException_WhenComponentAlreadyExists()
     {
         // Arrange
-        var entity = new Entity();
+        var entity = new Entity(EntityTypes.Player);
 
         var healthComponent = new HealthComponent();
         entity.AddComponent(healthComponent);
@@ -39,7 +39,7 @@ public class EntityTests
     public void AddComponents_WithMultipleComponents_ShouldAddAllComponents()
     {
         // Arrange
-        var entity = new Entity();
+        var entity = new Entity(EntityTypes.Player);
 
         var healthComponent = new HealthComponent();
         var nutritionComponent = new NutritionComponent();
@@ -56,7 +56,7 @@ public class EntityTests
     public void GetComponent_ShouldReturnNull_WhenComponentDoesNotExist()
     {
         // Arrange
-        var entity = new Entity();
+        var entity = new Entity(EntityTypes.Player);
 
 
         // Act
@@ -70,7 +70,7 @@ public class EntityTests
     public void RemoveComponent_ShouldRemoveComponent()
     {
         // Arrange
-        var entity = new Entity();
+        var entity = new Entity(EntityTypes.Player);
 
         var healthComponent = new HealthComponent();
         entity.AddComponent(healthComponent);
@@ -87,7 +87,7 @@ public class EntityTests
     public void RemoveComponent_ShouldReturnFalse_WhenComponentDoesNotExist()
     {
         // Arrange
-        var entity = new Entity();
+        var entity = new Entity(EntityTypes.Player);
 
 
         // Act
@@ -101,7 +101,7 @@ public class EntityTests
     public void HasComponent_ShouldReturnTrue_WhenComponentExists()
     {
         // Arrange
-        var entity = new Entity();
+        var entity = new Entity(EntityTypes.Player);
 
         var healthComponent = new HealthComponent();
         entity.AddComponent(healthComponent);
@@ -117,7 +117,7 @@ public class EntityTests
     public void HasComponent_ShouldReturnFalse_WhenComponentDoesNotExist()
     {
         // Arrange
-        var entity = new Entity();
+        var entity = new Entity(EntityTypes.Player);
 
 
         // Act
@@ -131,7 +131,7 @@ public class EntityTests
     public void AddComponent_ShouldThrowArgumentNullException_WhenComponentIsNull()
     {
         // Arrange
-        var entity = new Entity();
+        var entity = new Entity(EntityTypes.Player);
 
 
         // Act & Assert
@@ -143,7 +143,7 @@ public class EntityTests
     public void AddComponent_WithMultipleComponents_ShouldThrowException_WhenAnyComponentAlreadyExists()
     {
         // Arrange
-        var entity = new Entity();
+        var entity = new Entity(EntityTypes.Player);
         var healthComponent = new HealthComponent();
         entity.AddComponent(healthComponent);
 

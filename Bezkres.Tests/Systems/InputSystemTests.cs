@@ -36,7 +36,7 @@ public class InputSystemTests
         var entityManager = new EntityManager();
         var inputSystem = new InputSystem();
         entityManager.AddSystem(inputSystem);
-        var player = new Entity();
+        var player = new Entity(EntityTypes.Player);
         player.AddComponent(new LoggerComponent());
         player.AddComponent(new CommandComponent());
         entityManager.RegisterEntity(player);
@@ -60,7 +60,7 @@ public class InputSystemTests
     {
         // Arrange
         var inputSystem = new InputSystem();
-        var player = new Entity();
+        var player = new Entity(EntityTypes.Player);
         player.AddComponent(new CommandComponent());
 
 
@@ -105,7 +105,7 @@ public class InputSystemTests
     {
         // Arrange
         var inputSystem = new InputSystem();
-        var player = new Entity();
+        var player = new Entity(EntityTypes.Player);
 
 
         // Symulacja wejścia użytkownika
@@ -127,7 +127,7 @@ public class InputSystemTests
     {
         // Arrange
         var inputSystem = new InputSystem();
-        var player = new Entity();
+        var player = new Entity(EntityTypes.Player);
         player.AddComponent(new CommandComponent());
 
 
