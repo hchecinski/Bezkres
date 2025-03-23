@@ -15,7 +15,7 @@ public class GameConsole
     {
         Console.WriteLine();
 
-        Console.ForegroundColor = ConsoleColor.White;
+        Console.ForegroundColor = ConsoleColor.DarkGray;
         System.Console.WriteLine("W lokacji dostrzegasz:");
         Console.ForegroundColor = ConsoleColor.DarkBlue;
 
@@ -25,12 +25,46 @@ public class GameConsole
         }
     }
 
-    internal void WriteLocation(Entity location)
+    internal void WriteLocation(Entity location, Entity? west, Entity? north, Entity? east, Entity? sout)
     {
         Console.WriteLine();
 
         Console.ForegroundColor = ConsoleColor.Magenta;
         Console.WriteLine(location.GetComponent<NameComponent>()?.Name);
+
+        if(west is not null)
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("Na zachód jest: ");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(west.GetComponent<NameComponent>()?.Name);
+        }
+
+        if(north is not null)
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("Na północ jest: ");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(north.GetComponent<NameComponent>()?.Name);
+        }
+
+        if(east is not null)
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("Na wschód jest: ");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(east.GetComponent<NameComponent>()?.Name);
+        }
+
+        if(sout is not null)
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("Na południe jest: ");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(sout.GetComponent<NameComponent>()?.Name);
+        }
+
+        System.Console.WriteLine();
 
         Console.ForegroundColor = ConsoleColor.Gray;
         Console.WriteLine(location.GetComponent<DescriptionComponent>()?.Description);

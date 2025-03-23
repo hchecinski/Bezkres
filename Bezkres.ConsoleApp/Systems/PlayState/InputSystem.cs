@@ -85,7 +85,9 @@ public class InputSystem : IRegisterSystem, IUpdateSystem
                 var loggerComponent = item.GetComponent<LoggerComponent>();
                 ArgumentNullException.ThrowIfNull(loggerComponent);
 
+                System.Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.White;
+                Console.Write(">");
                 var commandEntered = Console.ReadLine()?.Trim().ToLower();
                 if (string.IsNullOrWhiteSpace(commandEntered))
                 {

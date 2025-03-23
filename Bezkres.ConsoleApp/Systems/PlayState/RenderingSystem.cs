@@ -62,15 +62,23 @@ public class RenderingSystem : IRegisterSystem
 
         var logComponent = _player.GetComponent<LoggerComponent>();
         ArgumentNullException.ThrowIfNull(logComponent);
+        
+        var position = location.GetComponent<PositionComponent>();
+        ArgumentNullException.ThrowIfNull(position);
+        var west = _localizations.FirstOrDefault(l => l.GetComponent<PositionComponent>()?.X == position.X - 1 && l.GetComponent<PositionComponent>()?.Y == position.Y);
+        var north = _localizations.FirstOrDefault(l => l.GetComponent<PositionComponent>()?.Y == position.Y - 1 && l.GetComponent<PositionComponent>()?.X == position.X);
+        var east = _localizations.FirstOrDefault(l => l.GetComponent<PositionComponent>()?.X == position.X + 1 && l.GetComponent<PositionComponent>()?.Y == position.Y);
+        var sout = _localizations.FirstOrDefault(l => l.GetComponent<PositionComponent>()?.Y == position.Y + 1 && l.GetComponent<PositionComponent>()?.X == position.X);
+
+
 
         _gameConsole.Clear();
-
         if (logComponent.Logger.Any())
         {
             _gameConsole.WriteLogger(logComponent.Logger);
         }
 
-        _gameConsole.WriteLocation(location);
+        _gameConsole.WriteLocation(location, west, north, east, sout);
 
         var items = location.GetComponent<InventoryComponent>();
         if(items?.ItemIds.Any() ?? false)
