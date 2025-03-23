@@ -51,25 +51,30 @@ public class MovementSystem : IRegisterSystem
 
         int x = positionComponent.X;
         int y = positionComponent.Y;
-        string direction = string.Empty;
+        string directFrom = string.Empty;
+        string directTo = string.Empty;
         bool isMoved = true;
         switch (commandComponent.CommandTypes)
         {
             case CommandTypes.MoveToWest:
                 x--;
-                direction = "zachód";
+                directFrom = "wschodu";
+                directTo = "zachód";
                 break;
             case CommandTypes.MoveToEast:
                 x++;
-                direction = "wschód";
+                directFrom = "zachodu";
+                directTo = "wschód";
                 break;
             case CommandTypes.MoveToNorth:
                 y--;
-                direction = "północ";
+                directFrom = "południa";
+                directTo = "północ";
                 break;
             case CommandTypes.MoveToSouth:
                 y++;
-                direction = "południe";
+                directFrom = "północy";
+                directTo = "południe";
                 break;
             default:
                 isMoved = false;
@@ -78,17 +83,17 @@ public class MovementSystem : IRegisterSystem
 
 
 
-        if (_localization.Any(l => l.GetComponent<PositionComponent>()?.Y == y && l.GetComponent<PositionComponent>()?.X == x) && !string.IsNullOrWhiteSpace(direction))
+        if (_localization.Any(l => l.GetComponent<PositionComponent>()?.Y == y && l.GetComponent<PositionComponent>()?.X == x) && !string.IsNullOrWhiteSpace(directFrom))
         {
             positionComponent.X = x;
             positionComponent.Y = y;
 
-            logger.Logger.Add(new Log($"- odchodzisz na {direction}.", ConsoleColor.DarkGray));
+            logger.Logger.Add(new Log($"- przychodzisz z {directFrom}.", ConsoleColor.DarkGray));
             commandComponent.CommandTypes = CommandTypes.None;
         }
         else if (isMoved)
         {
-            logger.Logger.Add(new Log($"- tam nie pójdziesz.", ConsoleColor.DarkGray));
+            logger.Logger.Add(new Log($"- na '{directTo}' nie możesz pójść.", ConsoleColor.DarkGray));
             commandComponent.CommandTypes = CommandTypes.None;
         }
 

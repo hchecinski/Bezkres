@@ -21,16 +21,16 @@ public class StartGameState : IGameState
     {
         var read = Console.ReadLine();
 
-        if(string.IsNullOrWhiteSpace( read?.Trim()?.ToLower()))
+        if (string.IsNullOrWhiteSpace(read?.Trim()?.ToLower()))
         {
             return;
         }
 
-        if(read == "start")
+        if (read == "start")
         {
             _gameStateManager.ChangeState(Entities.States.PlayState);
         }
-        else if(read == "koniec")
+        else if (read == "koniec")
         {
             _gameStateManager.CloseGame();
         }
@@ -43,5 +43,14 @@ public class StartGameState : IGameState
         System.Console.WriteLine("----------");
         System.Console.WriteLine("'start'  - rozpoczęcie gry");
         System.Console.WriteLine("'koniec' - wyjście z gry");
+    }
+
+    public void CleanUp()
+    {
+        Console.Clear();
+    }
+
+    public void Load()
+    {
     }
 }

@@ -1,4 +1,5 @@
-﻿using Bezkres.ConsoleApp.Managers;
+﻿using System.Diagnostics;
+using Bezkres.ConsoleApp.Managers;
 
 namespace Bezkres.ConsoleApp.GameStates;
 
@@ -48,5 +49,14 @@ public class MainMenuState : IGameState
         System.Console.WriteLine("'reset' - zacznij nową sesji gry.");
         System.Console.WriteLine("'koniec' - zakończyć grę.");
         System.Console.WriteLine("'anuluj' - powrót do sesji gry." );
+    }
+
+    public void CleanUp()
+    {
+        Console.Clear();
+    }
+
+    public void Load()
+    {
     }
 }

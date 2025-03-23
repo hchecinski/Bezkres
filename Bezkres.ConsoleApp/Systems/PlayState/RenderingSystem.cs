@@ -1,13 +1,18 @@
 ﻿using Bezkres.ConsoleApp.Components;
 using Bezkres.ConsoleApp.Entities;
+using Bezkres.ConsoleApp.Models;
 using Bezkres.ConsoleApp.Systems.Interfaces;
 
 namespace Bezkres.ConsoleApp.Systems.PlayState;
 
 public class RenderingSystem : IRegisterSystem
 {
+    
     readonly List<Entity> _localizations = new List<Entity>();
+    readonly List<Entity> _items = new List<Entity>();
     Entity? _player = null;
+    
+    GameConsole _gameConsole = new GameConsole();
 
     public void RegisterEntity(Entity entity)
     {
@@ -21,6 +26,10 @@ public class RenderingSystem : IRegisterSystem
             _localizations.Add(entity);
         }
 
+        if(entity.EntityType == EntityTypes.Item)
+        {
+            _items.Add(entity);
+        }
     }
 
     public void UnregisterEntity(Entity entity)
@@ -33,6 +42,11 @@ public class RenderingSystem : IRegisterSystem
         if (entity.EntityType == EntityTypes.Location)
         {
             _localizations.Remove(entity);
+        }
+
+        if(entity.EntityType == EntityTypes.Item)
+        {
+            _items.Remove(entity);
         }
     }
 
@@ -49,23 +63,19 @@ public class RenderingSystem : IRegisterSystem
         var logComponent = _player.GetComponent<LoggerComponent>();
         ArgumentNullException.ThrowIfNull(logComponent);
 
+        _gameConsole.Clear();
+
         if (logComponent.Logger.Any())
         {
-            foreach (var log in logComponent.Logger)
-            {
-                Console.ForegroundColor = log.Color;
-                Console.WriteLine(log.Text);
-            }
-
-            logComponent.Logger.Clear();
+            _gameConsole.WriteLogger(logComponent.Logger);
         }
 
-        Console.WriteLine();
+        _gameConsole.WriteLocation(location);
 
-        Console.ForegroundColor = ConsoleColor.Magenta;
-        Console.WriteLine(location.GetComponent<NameComponent>()?.Name);
-
-        Console.ForegroundColor = ConsoleColor.Gray;
-        Console.WriteLine(location.GetComponent<DescriptionComponent>()?.Description);
+        var items = location.GetComponent<InventoryComponent>();
+        if(items?.ItemIds.Any() ?? false)
+        {
+            _gameConsole.WriteItem(_items.Where(i => items.ItemIds.Contains(i.Id)));
+        }
     }
 }

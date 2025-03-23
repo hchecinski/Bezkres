@@ -1,4 +1,5 @@
 ﻿using Bezkres.ConsoleApp.Managers;
+using Bezkres.ConsoleApp.Entities;
 
 namespace Bezkres.ConsoleApp;
 
@@ -10,7 +11,7 @@ internal class Game
     private void Initialize()
     {
         _gameStateManager.Initialize(_entityManager);
-        _gameStateManager.ChangeState(Entities.States.StartGameState);
+        _gameStateManager.ChangeState(States.StartGameState);
     }
 
     private void Update()

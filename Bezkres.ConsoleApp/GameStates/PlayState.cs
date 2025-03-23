@@ -10,12 +10,14 @@ public class PlayState : IGameState
     EntityManager _entityManager;
     GameStateManager _gameStateManager;
 
+    #region Systems
     InputSystem _inputSystem = new InputSystem();
     MovementSystem _movementSystem = new MovementSystem();
     RenderingSystem _renderingSystem = new RenderingSystem();
     InventorySystem _inventorySystem = new InventorySystem();
     ChangeStateSystem _changeStateSystem = null;
-    
+#endregion
+
     public PlayState(EntityManager entityManager, GameStateManager gameStateManager)
     {
         _entityManager = entityManager;
@@ -24,6 +26,7 @@ public class PlayState : IGameState
 
     public void Initialize()
     {
+        //TODO: Jak do renderingu dodać item facktory aby można było pobierać nazwę itemu.
         _changeStateSystem = new ChangeStateSystem(_gameStateManager);
 
         _entityManager.AddSystem(_changeStateSystem);
@@ -54,6 +57,7 @@ public class PlayState : IGameState
         loc2.AddComponent(new NameComponent() { Name = "Przedsionek kopalni" });
         loc2.AddComponent(new DescriptionComponent() { Description = "Jest to przedsionek kompalni." });
         loc2.AddComponent(new PositionComponent() { X = 1, Y = 0 });
+        loc2.AddComponent(new InventoryComponent(){ItemIds = new List<Guid>() {pickaxe.Id}});
         _entityManager.RegisterEntity(loc2);
 
         var loc3 = new Entity(EntityTypes.Location);
@@ -86,5 +90,13 @@ public class PlayState : IGameState
     public void Draw()
     {
         _renderingSystem.Draw();
+    }
+
+    public void CleanUp()
+    {
+    }
+
+    public void Load()
+    {
     }
 }

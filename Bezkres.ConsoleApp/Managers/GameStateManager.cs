@@ -21,7 +21,10 @@ public class GameStateManager
             return;
         }
 
+        _currentGameState?.CleanUp();
         _currentGameState = gameState;
+        _currentGameState.Load();
+
     }
 
     public void Initialize(EntityManager entityManager)
