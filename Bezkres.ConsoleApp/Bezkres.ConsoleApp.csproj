@@ -9,7 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Systems\EndGameState\" />
+    <Compile Remove="Systems\EndGameState\**" />
+    <EmbeddedResource Remove="Systems\EndGameState\**" />
+    <None Remove="Systems\EndGameState\**" />
   </ItemGroup>
 
 </Project>

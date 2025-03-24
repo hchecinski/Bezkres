@@ -1,4 +1,5 @@
-﻿using Bezkres.ConsoleApp.Entities;
+﻿using Bezkres.ConsoleApp.Components;
+using Bezkres.ConsoleApp.Entities;
 using Bezkres.ConsoleApp.Systems.Interfaces;
 
 namespace Bezkres.ConsoleApp.Managers;
@@ -28,5 +29,13 @@ public class EntityManager
         ArgumentNullException.ThrowIfNull(entity);
 
         return _registerEntity.TryGetValue(entityId, out entity);
+    }
+
+    public Guid? GetItemByName(string name)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+        return _registerEntity.Values.ToList()
+            .FirstOrDefault(i => i.GetComponent<NameComponent>()?.Name.ToLower() == name.ToLower() && i.EntityType == EntityTypes.Item)?
+            .Id;
     }
 }

@@ -79,25 +79,35 @@ public class InputSystem : IRegisterSystem, IUpdateSystem
         {
             foreach (var item in _items)
             {
-                var commandComponent = item.GetComponent<CommandComponent>();
+                CommandComponent? commandComponent = item.GetComponent<CommandComponent>();
                 ArgumentNullException.ThrowIfNull(commandComponent);
 
-                var loggerComponent = item.GetComponent<LoggerComponent>();
+                LoggerComponent? loggerComponent = item.GetComponent<LoggerComponent>();
                 ArgumentNullException.ThrowIfNull(loggerComponent);
 
-                System.Console.WriteLine();
+                Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.Write(">");
-                var commandEntered = Console.ReadLine()?.Trim().ToLower();
+                Console.Write("> ");
+                string? commandEntered = Console.ReadLine()?.Trim().ToLower();
+                string parameter = string.Empty;
+
                 if (string.IsNullOrWhiteSpace(commandEntered))
                 {
                     return;
                 }
 
-                var commandType = CommandTypes.None;
+                if(commandEntered.Contains(" "))
+                {
+                    string[] splited = commandEntered.Split(' ');
+                    commandEntered = splited[0];
+                    parameter = splited[1];
+                }
+
+                CommandTypes commandType = CommandTypes.None;
                 if (_commands.TryGetValue(commandEntered, out commandType))
                 {
                     commandComponent.CommandTypes = commandType;
+                    commandComponent.Parameter = parameter;
                 }
                 else
                 {

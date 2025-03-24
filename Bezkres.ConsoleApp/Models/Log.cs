@@ -7,7 +7,7 @@ public class Log
         
     }
 
-    public Log(string text, ConsoleColor color)
+    public Log(string text, ConsoleColor color = ConsoleColor.DarkGray)
     {
         Text = text;
         Color = color;
