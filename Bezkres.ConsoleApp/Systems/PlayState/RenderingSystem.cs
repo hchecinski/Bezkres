@@ -5,48 +5,32 @@ using Bezkres.ConsoleApp.Systems.Interfaces;
 
 namespace Bezkres.ConsoleApp.Systems.PlayState;
 
-public class RenderingSystem : IRegisterSystem
+public class RenderingSystem : IRegisterSystem, IDrawSystem
 {
-    
     readonly List<Entity> _localizations = new List<Entity>();
     readonly List<Entity> _items = new List<Entity>();
     Entity? _player = null;
     
     GameConsole _gameConsole = new GameConsole();
 
-    public void RegisterEntity(Entity entity)
+    public void RegisterEntity(IEnumerable<Entity> entities)
     {
-        if (entity.EntityType == EntityTypes.Player)
+        foreach(var entity in entities)
         {
-            _player = entity;
-        }
+            if(entity.EntityType == EntityTypes.Player)
+            {
+                _player = entity;
+            }
 
-        if (entity.EntityType == EntityTypes.Location)
-        {
-            _localizations.Add(entity);
-        }
+            if(entity.EntityType == EntityTypes.Location)
+            {
+                _localizations.Add(entity);
+            }
 
-        if(entity.EntityType == EntityTypes.Item)
-        {
-            _items.Add(entity);
-        }
-    }
-
-    public void UnregisterEntity(Entity entity)
-    {
-        if (entity.EntityType == EntityTypes.Player)
-        {
-            _player = null;
-        }
-
-        if (entity.EntityType == EntityTypes.Location)
-        {
-            _localizations.Remove(entity);
-        }
-
-        if(entity.EntityType == EntityTypes.Item)
-        {
-            _items.Remove(entity);
+            if(entity.EntityType == EntityTypes.Item)
+            {
+                _items.Add(entity);
+            }
         }
     }
 
@@ -83,6 +67,7 @@ public class RenderingSystem : IRegisterSystem
         var items = location.GetComponent<InventoryComponent>();
         if(items?.ItemIds.Any() ?? false)
         {
+            _gameConsole.WriteLocationInventoryHeader();
             _gameConsole.WriteItem(_items.Where(i => items.ItemIds.Contains(i.Id)));
         }
     }

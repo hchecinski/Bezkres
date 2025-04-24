@@ -21,25 +21,7 @@ public class GameStateManager
             return;
         }
 
-        _currentGameState?.CleanUp();
         _currentGameState = gameState;
-        _currentGameState.Load();
-
-    }
-
-    public void Initialize(EntityManager entityManager)
-    {
-        IGameState startGameState = new StartGameState(entityManager, this);
-        IGameState playState = new PlayState(entityManager, this);
-        IGameState mainMenuState = new MainMenuState(entityManager, this);
-
-        startGameState.Initialize();
-        playState.Initialize();
-        mainMenuState.Initialize();
-
-        _gameStates.Add(States.StartGameState, startGameState);
-        _gameStates.Add(States.PlayState, playState);
-        _gameStates.Add(States.MainMenuState, mainMenuState);
     }
 
     internal void Update()
@@ -55,5 +37,23 @@ public class GameStateManager
     internal void CloseGame()
     {
         IsPlaying = false;
+    }
+
+    public void Initialize(EntityManager entityManager)
+    {
+        IGameState startGameState = new StartGameState(entityManager, this);
+        IGameState playState = new PlayState(entityManager, this);
+        IGameState mainMenuState = new MainMenuState(entityManager, this);
+        IGameState playerInventoryState = new PlayerInventoryState(entityManager, this);
+
+        startGameState.Initialize();
+        playState.Initialize();
+        mainMenuState.Initialize();
+        playerInventoryState.Initialize();
+
+        _gameStates.Add(States.StartGameState, startGameState);
+        _gameStates.Add(States.PlayState, playState);
+        _gameStates.Add(States.MainMenuState, mainMenuState);
+        _gameStates.Add(States.PlayerInventoryState, playerInventoryState);
     }
 }

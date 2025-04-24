@@ -44,13 +44,4 @@ public class StartGameState : IGameState
         System.Console.WriteLine("'start'  - rozpoczęcie gry");
         System.Console.WriteLine("'koniec' - wyjście z gry");
     }
-
-    public void CleanUp()
-    {
-        Console.Clear();
-    }
-
-    public void Load()
-    {
-    }
 }

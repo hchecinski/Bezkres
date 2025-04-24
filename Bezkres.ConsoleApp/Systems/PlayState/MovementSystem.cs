@@ -1,6 +1,7 @@
 ﻿using Bezkres.ConsoleApp.Components;
 using Bezkres.ConsoleApp.Entities;
 using Bezkres.ConsoleApp.Models;
+using Bezkres.ConsoleApp.Models.Commands;
 using Bezkres.ConsoleApp.Systems.Interfaces;
 
 namespace Bezkres.ConsoleApp.Systems.PlayState;
@@ -10,29 +11,19 @@ public class MovementSystem : IRegisterSystem
     readonly List<Entity> _localization = new List<Entity>();
     Entity? _player = null;
 
-    public void RegisterEntity(Entity entity)
+    public void RegisterEntity(IEnumerable<Entity> entities)
     {
-        if (entity.EntityType == EntityTypes.Location)
+        foreach(var entity in entities)
         {
-            _localization.Add(entity);
-        }
+            if(entity.EntityType == EntityTypes.Location)
+            {
+                _localization.Add(entity);
+            }
 
-        if (entity.EntityType == EntityTypes.Player)
-        {
-            _player = entity;
-        }
-    }
-
-    public void UnregisterEntity(Entity entity)
-    {
-        if (entity.EntityType == EntityTypes.Location)
-        {
-            _localization.Remove(entity);
-        }
-
-        if (entity.EntityType == EntityTypes.Player)
-        {
-            _player = null;
+            if(entity.EntityType == EntityTypes.Player)
+            {
+                _player = entity;
+            }
         }
     }
 

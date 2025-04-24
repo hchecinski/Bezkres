@@ -4,6 +4,5 @@ namespace Bezkres.ConsoleApp.Systems.Interfaces;
 
 public interface IRegisterSystem
 {
-    void RegisterEntity(Entity entity);
-    void UnregisterEntity(Entity entity);
+    void RegisterEntity(IEnumerable<Entity> entities);
 }

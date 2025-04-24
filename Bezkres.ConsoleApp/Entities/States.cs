@@ -5,5 +5,6 @@ public enum States
     None,
     StartGameState,
     PlayState,
-    MainMenuState
+    MainMenuState,
+    PlayerInventoryState
 }

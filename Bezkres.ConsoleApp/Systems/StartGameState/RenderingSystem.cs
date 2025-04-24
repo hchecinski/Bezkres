@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Bezkres.ConsoleApp.Systems.StartGameState;
 
-namespace Bezkres.ConsoleApp.Systems.StartGameState
+public class RenderingSystem
 {
-    internal class RenderingSystem
-    {
-    }
 }

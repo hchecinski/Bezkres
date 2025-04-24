@@ -13,10 +13,6 @@ public class GameConsole
 
     internal void WriteItem(IEnumerable<Entity> items)
     {
-        Console.WriteLine();
-
-        Console.ForegroundColor = ConsoleColor.DarkGray;
-        System.Console.WriteLine("W lokacji dostrzegasz:");
         Console.ForegroundColor = ConsoleColor.DarkBlue;
 
         foreach (var item in items)
@@ -79,5 +75,21 @@ public class GameConsole
         }
 
         logger.Clear();
+    }
+
+    internal void WritePlayerInventoryHeader()
+    {
+        Console.WriteLine();
+
+        Console.ForegroundColor = ConsoleColor.DarkGray;
+        System.Console.WriteLine("W inwentarzu posiadasz następujące przedmioty:");
+    }
+
+    internal void WriteLocationInventoryHeader()
+    {
+        Console.WriteLine();
+
+        Console.ForegroundColor = ConsoleColor.DarkGray;
+        System.Console.WriteLine("W lokacji dostrzegasz:");
     }
 }

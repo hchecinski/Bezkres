@@ -50,13 +50,4 @@ public class MainMenuState : IGameState
         System.Console.WriteLine("'koniec' - zakończyć grę.");
         System.Console.WriteLine("'anuluj' - powrót do sesji gry." );
     }
-
-    public void CleanUp()
-    {
-        Console.Clear();
-    }
-
-    public void Load()
-    {
-    }
 }
